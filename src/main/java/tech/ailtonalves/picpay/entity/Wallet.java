@@ -50,13 +50,13 @@ public class Wallet {
 	public WalletType walletType;
 	
 	
-	public Wallet debit(BigDecimal value) {
-		return new Wallet(fullName, document, email, telephone, password, balance.subtract(value), walletType);
+	public void debit(BigDecimal value) {
+		this.balance = this.balance.subtract(value);
 	}
 	
 	
-	public Wallet credit(BigDecimal value) {
-		return new Wallet(fullName, document, email, telephone, password, balance.add(value), walletType);
+	public void credit(BigDecimal value) {
+		this.balance = this.balance.add(value);
 	}
 
 	public Wallet(String fullName, String document, String email, String telephone, String password,

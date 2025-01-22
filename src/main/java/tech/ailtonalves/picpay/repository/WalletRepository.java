@@ -19,5 +19,24 @@ public class WalletRepository implements PanacheRepository<Wallet> {
 				.find("document = ?1 or email = ?2", document, email)
 				.firstResultOptional();
 	}
+	
+	public Optional<Wallet> update(Wallet wallet) {
+	    final var id = wallet.getId();
+	    var savedOpt = this.findByIdOptional(id);
+	    if (savedOpt.isEmpty()) {
+	        return Optional.empty();
+	    }
+
+	    var saved = savedOpt.get();
+	    saved.setFullName(wallet.getFullName());
+	    saved.setDocument(wallet.getDocument());
+	    saved.setEmail(wallet.getEmail());
+	    saved.setTelephone(wallet.getTelephone());
+	    saved.setInitialBalance(wallet.getBalance());
+	    saved.setPassword(wallet.getPassword());
+	    saved.setWalletType(wallet.getWalletType());
+
+	    return Optional.of(saved);
+	}
 
 }
