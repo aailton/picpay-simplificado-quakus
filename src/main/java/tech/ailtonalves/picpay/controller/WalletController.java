@@ -2,8 +2,8 @@ package tech.ailtonalves.picpay.controller;
 
 import java.util.List;
 
+import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
-import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
@@ -16,6 +16,7 @@ import tech.ailtonalves.picpay.exception.BusinessException;
 import tech.ailtonalves.picpay.service.WalletService;
 
 @Path("/wallets")
+@RequestScoped
 public class WalletController {
 	
 	@Inject
@@ -28,7 +29,6 @@ public class WalletController {
 	}
 	
 	@POST
-	@Transactional
 	@Path("/create")
 	public Response createWallet(@Valid WalletDTO dto) throws BusinessException {
 		

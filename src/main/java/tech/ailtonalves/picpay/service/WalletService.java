@@ -7,6 +7,7 @@ import org.jboss.logging.Logger;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 import tech.ailtonalves.picpay.dto.WalletDTO;
 import tech.ailtonalves.picpay.entity.Wallet;
 import tech.ailtonalves.picpay.exception.BusinessException;
@@ -15,12 +16,13 @@ import tech.ailtonalves.picpay.repository.WalletRepository;
 @ApplicationScoped
 public class WalletService implements WalletServiceInterface {
 	
-	private static final Logger LOG = Logger.getLogger(WalletService.class);
-	
 	@Inject
 	WalletRepository walletRepository;
 	
+	private static final Logger LOG = Logger.getLogger(WalletService.class);
+	
 	@Override
+	@Transactional
 	public Wallet createWallet(WalletDTO walletDTO) throws BusinessException  {
 		LOG.info("Solicitacao para criacao da carteira : " + walletDTO);
 		

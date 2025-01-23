@@ -7,6 +7,6 @@ import tech.ailtonalves.picpay.entity.Transfer;
 
 public interface TransferServiceInterface {
 	
-	public Transfer createTransfer(TransferDTO transferDTO);
+	public Transfer createTransfer(TransferDTO transferDTO) throws Exception;
 	public List<Transfer> getAllTransfer();
 }

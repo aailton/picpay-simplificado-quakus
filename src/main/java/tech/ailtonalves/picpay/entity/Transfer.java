@@ -17,7 +17,7 @@ import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "transactions")
+@Table(name = "tb_transactions")
 public class Transfer {
 
 	@Id

@@ -2,8 +2,8 @@ package tech.ailtonalves.picpay.controller;
 
 import java.util.List;
 
+import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
-import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
@@ -15,17 +15,17 @@ import tech.ailtonalves.picpay.entity.Transfer;
 import tech.ailtonalves.picpay.service.TransferService;
 
 @Path("/transfer")
+@RequestScoped
 public class TransferController {
 	
 	@Inject
 	TransferService transferService;
 	
 	@POST
-	@Transactional
-	public Response createTransfer(@Valid TransferDTO dto) {
+	public Response createTransfer(@Valid TransferDTO dto) throws Exception {
 		
 		transferService.createTransfer(dto);
-		return null;
+		return Response.status(Response.Status.CREATED).build();
 	}
 	
 	@GET
