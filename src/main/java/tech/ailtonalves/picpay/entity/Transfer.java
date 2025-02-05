@@ -2,6 +2,7 @@ package tech.ailtonalves.picpay.entity;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -21,8 +22,8 @@ import jakarta.validation.constraints.NotNull;
 public class Transfer {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	@GeneratedValue(strategy = GenerationType.UUID)
+	private UUID id;
 	
 	@ManyToOne
 	@JoinColumn(name = "wallet_payer_id")
@@ -53,11 +54,11 @@ public class Transfer {
 	public Transfer() {
 	}
 
-	public Long getId() {
+	public UUID getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(UUID id) {
 		this.id = id;
 	}
 

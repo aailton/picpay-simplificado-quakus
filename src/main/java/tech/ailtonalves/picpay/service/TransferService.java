@@ -8,6 +8,8 @@ import org.jboss.logging.Logger;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import jakarta.ws.rs.core.Response;
+import tech.ailtonalves.picpay.client.AuthClientInterface;
 import tech.ailtonalves.picpay.dto.TransferDTO;
 import tech.ailtonalves.picpay.entity.Transfer;
 import tech.ailtonalves.picpay.entity.Wallet;
@@ -25,6 +27,9 @@ public class TransferService implements TransferServiceInterface {
 	@Inject
 	TransferRepository transferRepository;
 	
+	@Inject
+	AuthClientInterface authClientInterface;
+	
 	private static final Logger LOG = Logger.getLogger(TransferService.class);
 	
 	@Override
@@ -38,15 +43,22 @@ public class TransferService implements TransferServiceInterface {
 		Optional<Wallet> optionalPayee = walletRepository.findByIdOptional(transferDTO.payee());
 		Wallet walletPayee = optionalPayee.orElseThrow(() -> new BusinessException("Invalid payee"));
 		
-		transferRepository.persist(transferDTO.toTransfer("Autorizado", walletPayee, walletPayer));
-		
 		validate(transferDTO, walletPayer);
+		
+		var isAuth = authClientInterface.authorizeTransaction(walletPayer, transferDTO.value());
+		
+		if(isAuth.getStatus() == Response.Status.FORBIDDEN.getStatusCode()) {
+			transferRepository.persist(transferDTO.toTransfer("Não Autorizado", walletPayee, walletPayer));
+			throw new BusinessException("Transfer Not Authorized");
+		}
 		
 		walletPayer.debit(transferDTO.value());
 		walletPayee.credit(transferDTO.value());
 		
 		walletRepository.persist(walletPayer);
 		walletRepository.persist(walletPayee);
+		
+		transferRepository.persist(transferDTO.toTransfer("Autorizado", walletPayee, walletPayer));
 		
 		return transferDTO.toTransfer("Autorizado", walletPayee, walletPayer);
 		
