@@ -25,7 +25,7 @@ public class ConstraintViolationExceptionProvider implements ExceptionMapper<Con
 		Set<ConstraintViolation<?>> violations = e.getConstraintViolations();
 
         for (ConstraintViolation<?> violation : violations) {
-            LOG.error("O campo " + violation.getPropertyPath() + " foi informado como nulo: " + violation);
+            LOG.error(violation.getPropertyPath() + " was reported as null: " + violation);
         }
         
 		ProblemDetail problem = new ProblemDetail(e);

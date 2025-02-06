@@ -1,4 +1,4 @@
-package tech.ailtonalves.picpay.client;
+package tech.ailtonalves.picpay.client.authorization;
 
 import java.math.BigDecimal;
 

@@ -22,31 +22,31 @@ public class Wallet {
 	private Long id;
 	
 	@Column(name = "full_name")
-	@NotNull(message = "Informe o nome completo")
+	@NotNull(message = "Enter full name")
 	private String fullName;
 	
 	@Column(name = "document")
-	@NotNull(message = "Informe o CPF ou CNPJ")
+	@NotNull(message = "Enter your CPF or CNPJ")
 	private String document;
 	
 	@Column(name = "email")
-	@NotNull(message = "Informe o email")
-	@Pattern(regexp = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$",message = "Formato de email inválido" )
+	@NotNull(message = "Enter email")
+	@Pattern(regexp = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$",message = "Invalid email format" )
 	private String email;
 	
 	@Column(name = "telephone")
-	@NotNull(message = "Informe o número de telefone")
+	@NotNull(message = "Enter phone number")
 	private String telephone;
 	
 	@Column(name = "password")
-	@NotNull(message = "Insira sua senha")
+	@NotNull(message = "Enter your password")
 	private String password;
 	
 	@Column(name = "balance")
 	private BigDecimal balance;
 	
 	@Enumerated(EnumType.STRING)
-	@NotNull(message = "Informe o tipo de carteira: COSTUMER ou MERCHANT")
+	@NotNull(message = "Enter the type of wallet: COSTUMER or MERCHANT")
 	public WalletType walletType;
 	
 	

@@ -70,6 +70,10 @@
 			<artifactId>rest-assured</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+        	<groupId>io.smallrye</groupId>
+        	<artifactId>smallrye-fault-tolerance</artifactId>
+    	</dependency>
 	</dependencies>
 
 	<build>

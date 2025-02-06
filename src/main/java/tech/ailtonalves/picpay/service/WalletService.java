@@ -29,7 +29,7 @@ public class WalletService implements WalletServiceInterface {
 		Optional<Wallet> validation = walletRepository.findByDocumentOrEmail(walletDTO.document(), walletDTO.email());
 		
 		if (validation.isPresent()) {
-            throw new BusinessException ("ERRO: documento e/ou email ja cadastrado(s)!");
+            throw new BusinessException ("ERROR: document and/or email already registered!");
         }
 		
 		walletRepository.persist(walletDTO.toWallet());

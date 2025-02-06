@@ -36,7 +36,7 @@ public class ProblemDetail {
 		this.status = 400;
 		this.timestamp = OffsetDateTime.now();
 		this.title = "Invalid data";
-		this.detail = "Dados inválidos";
+		this.detail = "Invalid data";
 		this.messages = new ArrayList<>();
 	}
 

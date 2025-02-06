@@ -2,6 +2,7 @@ package tech.ailtonalves.picpay.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 import org.jboss.logging.Logger;
 
@@ -9,7 +10,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.core.Response;
-import tech.ailtonalves.picpay.client.AuthClientInterface;
+import tech.ailtonalves.picpay.client.authorization.AuthClientInterface;
 import tech.ailtonalves.picpay.dto.TransferDTO;
 import tech.ailtonalves.picpay.entity.Transfer;
 import tech.ailtonalves.picpay.entity.Wallet;
@@ -30,6 +31,9 @@ public class TransferService implements TransferServiceInterface {
 	@Inject
 	AuthClientInterface authClientInterface;
 	
+	@Inject
+	NotificationService notificationService;
+	
 	private static final Logger LOG = Logger.getLogger(TransferService.class);
 	
 	@Override
@@ -48,7 +52,7 @@ public class TransferService implements TransferServiceInterface {
 		var isAuth = authClientInterface.authorizeTransaction(walletPayer, transferDTO.value());
 		
 		if(isAuth.getStatus() == Response.Status.FORBIDDEN.getStatusCode()) {
-			transferRepository.persist(transferDTO.toTransfer("Não Autorizado", walletPayee, walletPayer));
+			transferRepository.persist(transferDTO.toTransfer("Not Authorized", walletPayee, walletPayer));
 			throw new BusinessException("Transfer Not Authorized");
 		}
 		
@@ -58,9 +62,11 @@ public class TransferService implements TransferServiceInterface {
 		walletRepository.persist(walletPayer);
 		walletRepository.persist(walletPayee);
 		
-		transferRepository.persist(transferDTO.toTransfer("Autorizado", walletPayee, walletPayer));
+		transferRepository.persist(transferDTO.toTransfer("Authorized", walletPayee, walletPayer));
 		
-		return transferDTO.toTransfer("Autorizado", walletPayee, walletPayer);
+		CompletableFuture.runAsync(() -> notificationService.sendNotification(transferDTO));
+		
+		return transferDTO.toTransfer("Authorized", walletPayee, walletPayer);
 		
 	}
 	

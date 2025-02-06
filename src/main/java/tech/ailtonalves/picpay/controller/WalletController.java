@@ -36,16 +36,4 @@ public class WalletController {
 		return Response.status(Response.Status.CREATED).entity(dto).build();
 	}
 	
-	@POST
-	@Path("/deposit")
-	public String depositIntoWallet() {
-		return null;
-	}
-	
-	@POST
-	@Path("/withdraw")
-	public String withdrawFromWallet() {
-		return null;
-	}
-	
 }
